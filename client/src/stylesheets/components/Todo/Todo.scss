@@ -1,9 +1,10 @@
 .container {
 	display: flex;
-	margin: 20px;
+	margin: 20px 0;
 
 	.complete-task, .uncomplete-task {
 		margin: 0 20px;
+		min-width: 270px;
 
 		h2 {
 			margin: 0;
@@ -12,8 +13,6 @@
 }
 
 .task {
-	width: 60%;
-	min-width: 300px;
 	height: 40px;
 
 	display: flex;
@@ -92,4 +91,19 @@
 .item-exit-active {
   opacity: 0;
   transition: opacity 500ms ease-in;
+}
+
+@media screen and (max-width: 715px) {
+  .container {
+		flex-direction: column;
+	}
+	
+	.complete-task, .uncomplete-task {
+		width: 60%;
+		min-width: 0;
+
+		.task {
+			min-width: 0;
+		}
+	}
 }
