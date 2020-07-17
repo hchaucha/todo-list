@@ -11,6 +11,8 @@ import {
 	updateTask
 } from "actions/tasks"
 
+import "stylesheets/components/Todo/Todo.scss"
+
 function Todo() {
 	const [ tasks, setTasks ] = useState([]); // Initiate state for tasks list
 	const [ inputValue, setInputValue ] = useState(null) // Store the input value
@@ -39,7 +41,7 @@ function Todo() {
 
 		// Perform the action
 		actionFunction(value).then((res) => {
-			fetchAll().then((res) => setTasks(res)); // Then fetch new data (Use that way if there is not a lot of data)
+			fetchAllTasks().then((res) => setTasks(res)); // Then fetch new data (Use that way if there is not a lot of data)
 		});
 	}
 
@@ -77,7 +79,7 @@ function Todo() {
 				<h2>Not completed</h2>
 				<TransitionGroup className="todo-list">
 					{	todoTasks &&
-						todoTasks.map((task) => {
+						todoTasks.map((task) => (
 							<CSSTransition
 								key={task.id}
 								classNames="item"
@@ -92,10 +94,10 @@ function Todo() {
 									</div>
 								</div>
 							</CSSTransition>
-						})
+						))
 					}
 				</TransitionGroup>
-
+			
 				{/* Render the button or the input for task creation */}
 				<div className="add-task">
 					{ isInputAvailable && // If the button have been clicked then show the input field
@@ -115,34 +117,35 @@ function Todo() {
 						+
 					</div>
 				</div>
+			</div>
 
-				<div className="complete">
-					<h2>Completed</h2>
-					<TransitionGroup> {/* Create a simple css animation */}
-						{/* Render all completed tasks */}
-						{ doneTasks &&
-							doneTasks.map((task) => (
-								<CSSTransition // Configure the css animation
-									key={task.id}
-									timeout={ 400 }
-									classNames="item"
-									appear={ true }
+
+			<div className="complete-task">
+				<h2>Completed</h2>
+				<TransitionGroup> {/* Create a simple css animation */}
+					{/* Render all completed tasks */}
+					{ doneTasks &&
+						doneTasks.map((task) => (
+							<CSSTransition // Configure the css animation
+								key={task.id}
+								timeout={ 400 }
+								classNames="item"
+								appear={ true }
+							>
+								<div
+									key={ task.id }
+									className="task done"
 								>
-									<div
-										key={ task.id }
-										className="task done"
-									>
-										<div>{ task.title }</div>
-										<div className="actions">
-											<i className="fas fa-check icon left" onClick={ () => handleTaskActions('update', task.id) } />
-											<i className="fas fa-trash icon" onClick={ () => handleTaskActions('delete', task.id) } />
-										</div>
+									<div>{ task.title }</div>
+									<div className="actions">
+										<i className="fas fa-check icon left" onClick={ () => handleTaskActions('update', task.id) } />
+										<i className="fas fa-trash icon" onClick={ () => handleTaskActions('delete', task.id) } />
 									</div>
-								</CSSTransition>
-							))
-						}
-					</TransitionGroup>
-				</div>
+								</div>
+							</CSSTransition>
+						))
+					}
+				</TransitionGroup>
 			</div>
 		</div>
 	);
