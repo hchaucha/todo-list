@@ -67,6 +67,7 @@ function Todo() {
 				setErrorMessage("Each task should have a title") // Set the new message error
 			} else { // If the input have been correctly filled
 				handleTaskActions('create', inputValue) // Create the task
+				resetInputValues() // Reset all input value and disable input field
 			}
 		} else {
 			setIsInputAvailable(true)

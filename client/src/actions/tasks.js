@@ -3,7 +3,7 @@ import api from "api"
 export const fetchAllTasks = () =>
 	api.tasks
 		.fetchAllTasks()
-		.then((res) => res)
+		.then((res) => res.data.tasks)
 
 export const createTask = (value) =>
 	api.tasks
