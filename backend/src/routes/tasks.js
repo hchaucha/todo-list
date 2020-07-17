@@ -16,7 +16,7 @@ function readDataFile() {
 // Fetch all tasks from JSON file
 router.get('/', (req, res) => {
 	const data = readDataFile() // Read file and return formated data
-	return (res.status(200).json({ success: true, data }))
+	return (res.status(200).json(data))
 })
 
 // Create a new task and store it in JSON file
@@ -29,7 +29,7 @@ router.post('/create', (req, res) => {
 	const data = { id, title, isDone: false } // Create the new task with generated id and given title
 	json.tasks.push(data) // Push the new task into the existing array
 
-	const updatedFile = fs.writeFileSync(path.join(__dirname, filePath), JSON.stringify(data)) // Write file with new data
+	const updatedFile = fs.writeFileSync(path.join(__dirname, filePath), JSON.stringify(json)) // Write file with new data
 
 	return (res.status(200).json({ success: true, data }))
 })
@@ -56,9 +56,9 @@ router.delete('/delete', (req, res) => {
 // Update the status of the targeted task inside the JSON file
 router.put('/update', (req, res) => {
 	const { id } = req.body // Get id of the targeted task  from request body
-
+	
 	const data = readDataFile() // Read file and return formated data
-
+	
 	const index = data.tasks.findIndex((task) => task.id === id) // Get the index of the targeted task in tasks array
 	data.tasks[index].isDone = !data.tasks[index].isDone
 
