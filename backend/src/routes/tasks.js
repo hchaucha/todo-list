@@ -7,10 +7,15 @@ const router = express.Router()
 const filePath = "../../data.json"
 
 function readDataFile() {
-	const file = fs.readFileSync(path.join(__dirname, filePath)) // Read file
-	const data  = JSON.parse(file) // Formating data
-	
-	return (data)
+	try {
+		const file = fs.readFileSync(path.join(__dirname, filePath)) // Read file
+		const data = JSON.parse(file) // Formating data
+		return (data)
+	} catch (err) { // If no such file or directory
+		const initData = { tasks: [] } // Initialize data
+		const file = fs.writeFileSync(path.join(__dirname, filePath), JSON.stringify(initData)) // Create a new file
+		return (initData)
+	}
 }
 
 // Fetch all tasks from JSON file
@@ -60,11 +65,15 @@ router.put('/update', (req, res) => {
 	const data = readDataFile() // Read file and return formated data
 	
 	const index = data.tasks.findIndex((task) => task.id === id) // Get the index of the targeted task in tasks array
-	data.tasks[index].isDone = !data.tasks[index].isDone
-
-	const updatedFile = fs.writeFileSync(path.join(__dirname, filePath), JSON.stringify(data)) // Write file with new data
-
-	return (res.status(200).json({ success: true, data: data.tasks[index] }))
+	
+	if (data.tasks[index]) {
+		data.tasks[index].isDone = !data.tasks[index].isDone
+	
+		const updatedFile = fs.writeFileSync(path.join(__dirname, filePath), JSON.stringify(data)) // Write file with new data
+		return (res.status(200).json({ success: true, data: data.tasks[index] }))
+	} else {
+		return (res.status(500).json({ success: false, message: "Entry (Task) not found" }))
+	}
 })
 
 export default router
