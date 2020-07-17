@@ -4,7 +4,7 @@ import fs from "fs"
 import shortid from "shortid"
 
 const router = express.Router()
-const filePath = "../../../data.json"
+const filePath = "../../data.json"
 
 function readDataFile() {
 	const file = fs.readFileSync(path.join(__dirname, filePath)) // Read file
